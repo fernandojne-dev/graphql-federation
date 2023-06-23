@@ -1,3 +1,288 @@
 type Query {
-  hello: String
+  Producer(id: ID!): Producer!
+  Subscriber(id: ID!): Subscriber!
+  Movie(id: ID!): Movie!
+  Serie(id: ID!): Serie!
+}
+
+type Mutation {
+  createProducer(
+    createProducerInput: CreateProducerInput!
+  ): CreateProducerResponse!
+  createSubscriber(
+    createSubscriberInput: CreateSubscriberInput!
+  ): CreateSubscriberResponse!
+  createMovie(createMovieInput: CreateMovieInput!): CreateMovieResponse!
+  createSerie(createSerieInput: CreateSerieInput!): CreateSerieResponse!
+  createSeason(createSeasonInput: CreateSeasonInput!): CreateSeasonResponse!
+  addSeasonToSerie(
+    addSeasonToSerieInput: AddSeasonToSeriesInput!
+  ): CreateSerieResponse!
+
+  subscribeToProducer(
+    subscribeToProducer: SubscribeToProducerInput!
+  ): SubscribeToProducerResponse!
+  donateToSubscriber(
+    donateToSubscriberInput: DonateToSubscriberInput!
+  ): DonateToSubscriberResponse!
+}
+
+interface MutationResponse {
+  "Similar to HTTP status code, represents the status of the mutation"
+  code: Int!
+  "Indicates whether the mutation was successful"
+  success: Boolean!
+  "Human-readable message for the UI"
+  message: String!
+}
+
+# Belongs to Accounts Domain
+interface User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Producer implements User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  createdAt: String!
+  updatedAt: String!
+  media: [Media!]
+  subscribers: [Subscriber!]
+}
+
+input CreateProducerInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+type CreateProducerResponse implements MutationResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  producer: Producer
+}
+
+type Subscriber implements User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  createdAt: String!
+  updatedAt: String!
+  subscriptions: [Subscription!]
+  likedMedia: [Media!]
+}
+
+input CreateSubscriberInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+type CreateSubscriberResponse implements MutationResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  subscriber: Subscriber
+}
+
+# Belongs to Media Domain
+interface Media {
+  id: ID!
+  title: String!
+  description: String
+  coverUrl: String!
+  thubmnailUrl: String
+  tags: [String!]
+  createdAt: String!
+  updatedAt: String!
+  producer: Producer!
+}
+
+type Movie implements Media {
+  id: ID!
+  title: String!
+  description: String
+  streamUrl: String!
+  coverUrl: String!
+  thubmnailUrl: String
+  tags: [String!]
+  createdAt: String!
+  updatedAt: String!
+  producer: Producer!
+  duration: Int!
+  releaseDate: String!
+  director: String!
+  actors: [String!]!
+  genre: String!
+  rating: Float!
+}
+
+input CreateMovieInput {
+  title: String!
+  description: String
+  streamUrl: String!
+  coverUrl: String!
+  thubmnailUrl: String
+  tags: [String!]
+  duration: Int!
+  releaseDate: String!
+  director: String!
+  actors: [String!]!
+  genre: String!
+  rating: Float!
+  #double check on this
+  producerId: ID!
+}
+
+type CreateMovieResponse implements MutationResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  movie: Movie
+}
+
+type Serie implements Media {
+  id: ID!
+  title: String!
+  description: String
+  coverUrl: String!
+  thubmnailUrl: String
+  tags: [String!]
+  createdAt: String!
+  updatedAt: String!
+  producer: Producer!
+  seasons: [Season!]
+}
+
+input CreateSerieInput {
+  title: String!
+  description: String
+  coverUrl: String!
+  thubmnailUrl: String
+  tags: [String!]
+}
+
+input AddSeasonToSeriesInput {
+  serieId: ID!
+  seasonId: ID!
+}
+
+type CreateSerieResponse implements MutationResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  serie: Serie
+}
+
+type Season {
+  id: ID!
+  title: String!
+  description: String
+  createdAt: String!
+  updatedAt: String!
+  releaseDate: String!
+  actors: [String!]!
+  episodes: [Episode!]
+}
+
+type Episode {
+  id: ID!
+  title: String!
+  description: String
+  createdAt: String!
+  updatedAt: String!
+  releaseDate: String!
+  duration: Int!
+  streamUrl: String!
+  coverUrl: String!
+  thubmnailUrl: String
+  tags: [String!]
+  rating: Float!
+}
+
+input CreateSeasonInput {
+  title: String!
+  description: String
+  releaseDate: String!
+  actors: [String!]!
+  episodes: [EpisodeInput!]
+}
+
+input EpisodeInput {
+  title: String!
+  description: String
+  releaseDate: String!
+  duration: Int!
+  streamUrl: String!
+  coverUrl: String!
+  thubmnailUrl: String
+  tags: [String!]
+  rating: Float!
+}
+
+type CreateSeasonResponse implements MutationResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  season: Season
+}
+
+# Belongs to Subscription Domain
+type Subscription {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  subscriber: Subscriber!
+  producer: Producer!
+}
+
+input SubscribeToProducerInput {
+  subscriberId: ID!
+  producerId: ID!
+}
+
+type SubscribeToProducerResponse implements MutationResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  subscription: Subscription
+}
+
+# Belongs to Transactions Domain
+
+type Transaction {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  subscriber: Subscriber!
+  producer: Producer!
+  amount: Float!
+  status: String!
+  paymentMethod: String!
+  paymentId: String!
+}
+
+input DonateToSubscriberInput {
+  subscriberId: ID!
+  producerId: ID!
+  amount: Float!
+  status: String!
+  paymentMethod: String!
+  paymentId: String!
+}
+
+type DonateToSubscriberResponse implements MutationResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  transaction: Transaction
 }
