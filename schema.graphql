@@ -77,7 +77,7 @@ type Subscriber implements User {
   password: String!
   createdAt: String!
   updatedAt: String!
-  subscriptions: [Subscription!]
+  subscriptions: [Enrollments!]
   likedMedia: [Media!]
 }
 
@@ -100,7 +100,7 @@ interface Media {
   title: String!
   description: String
   coverUrl: String!
-  thubmnailUrl: String
+  thumbnailUrl: String
   tags: [String!]
   createdAt: String!
   updatedAt: String!
@@ -113,7 +113,7 @@ type Movie implements Media {
   description: String
   streamUrl: String!
   coverUrl: String!
-  thubmnailUrl: String
+  thumbnailUrl: String
   tags: [String!]
   createdAt: String!
   updatedAt: String!
@@ -131,7 +131,7 @@ input CreateMovieInput {
   description: String
   streamUrl: String!
   coverUrl: String!
-  thubmnailUrl: String
+  thumbnailUrl: String
   tags: [String!]
   duration: Int!
   releaseDate: String!
@@ -155,7 +155,7 @@ type Serie implements Media {
   title: String!
   description: String
   coverUrl: String!
-  thubmnailUrl: String
+  thumbnailUrl: String
   tags: [String!]
   createdAt: String!
   updatedAt: String!
@@ -167,7 +167,7 @@ input CreateSerieInput {
   title: String!
   description: String
   coverUrl: String!
-  thubmnailUrl: String
+  thumbnailUrl: String
   tags: [String!]
 }
 
@@ -204,7 +204,7 @@ type Episode {
   duration: Int!
   streamUrl: String!
   coverUrl: String!
-  thubmnailUrl: String
+  thumbnailUrl: String
   tags: [String!]
   rating: Float!
 }
@@ -224,7 +224,7 @@ input EpisodeInput {
   duration: Int!
   streamUrl: String!
   coverUrl: String!
-  thubmnailUrl: String
+  thumbnailUrl: String
   tags: [String!]
   rating: Float!
 }
@@ -236,8 +236,8 @@ type CreateSeasonResponse implements MutationResponse {
   season: Season
 }
 
-# Belongs to Subscription Domain
-type Subscription {
+# Belongs to Enrollments Domain
+type Enrollments {
   id: ID!
   createdAt: String!
   updatedAt: String!
@@ -254,7 +254,7 @@ type SubscribeToProducerResponse implements MutationResponse {
   code: Int!
   success: Boolean!
   message: String!
-  subscription: Subscription
+  subscription: Enrollments
 }
 
 # Belongs to Transactions Domain

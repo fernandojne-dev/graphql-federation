@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
-    "rootDirs": ["src"],
+    "rootDir": ".",
     "outDir": "dist",
     "lib": ["es2020"],
     "target": "es2020",
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "types": ["node"],
-    "strictNullChecks": true
-  }
+    "strictNullChecks": true,
+    "baseUrl": "./",
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts", "resolvers.ts", "index.ts"],
+  "exclude": ["node_modules", ".vscode"]
 }
