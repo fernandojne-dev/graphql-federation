@@ -10,6 +10,11 @@ class Enrollments {
       }
     ]
   }
+
+  subscribeToProducer (subscribeToProducerInput: any, envelope: any): any {
+    console.log('subscribeToProducer', { subscribeToProducerInput })
+    return envelope({ subscription: this.getEnrollmentsBySubscriberId('1')[0] })
+  }
 }
 
 export default Enrollments

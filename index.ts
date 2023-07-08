@@ -17,7 +17,19 @@ const startApolloServer = async (): Promise<void> => {
   const port = 4000
 
   try {
-    const { url } = await startStandaloneServer(server, { listen: { port } })
+    const { url } = await startStandaloneServer(server, {
+      context: async (server) => {
+        return {
+          dataSources: {
+            accounts: new AccountsDataSources(),
+            media: new MediaDataSources(),
+            enrollments: new Enrollments(),
+            transactions: new Transactions()
+          }
+        }
+      },
+      listen: { port }
+    })
 
     console.log(`🚀 Server ready at ${url}`)
   } catch (err) {

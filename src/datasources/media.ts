@@ -7,6 +7,7 @@ class Media {
       description: 'Movie 1 description',
       streamUrl: 'https://www.youtube.com/watch?v=5qap5aO4i9A',
       coverUrl: 'https://i.ytimg.com/vi/5qap5aO4i9A/maxresdefault.jpg',
+      tags: ['tag1', 'tag2'],
       duration: 120,
       releaseDate: new Date().toISOString(),
       director: 'Director 1',
@@ -15,6 +16,7 @@ class Media {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       producerId: '1',
+      actors: ['actor1', 'actor2'],
       type: 'Movie'
     }
   }
@@ -81,6 +83,26 @@ class Media {
         ]
       }
     ]
+  }
+
+  createMovie (createMovieInput: any, envelope: any): any {
+    console.log('createMovie', { createMovieInput })
+    return envelope({ movie: this.getMovie('1') })
+  }
+
+  createSerie (createSerieInput: any, envelope: any): any {
+    console.log('createSerie', { createSerieInput })
+    return envelope({ serie: this.getSerie('2') })
+  }
+
+  createSeason (createSeasonInput: any, envelope: any): any {
+    console.log('createSeason', { createSeasonInput })
+    return envelope({ season: this.getSeasonsBySerieId('1')[0] })
+  }
+
+  addSeasonToSerie (addSeasonToSerieInput: any, envelope: any): any {
+    console.log('addSeasonToSerie', { addSeasonToSerieInput })
+    return envelope({ serie: this.getSerie('2') })
   }
 }
 

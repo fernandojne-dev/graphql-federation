@@ -32,6 +32,16 @@ class Accounts {
       this.getSubscriber('2')
     ]
   }
+
+  createProducer (createProducerInput: any, envelope: any): any {
+    console.log('createProducer', { createProducerInput })
+    return envelope({ producer: this.getProducer('1') })
+  }
+
+  createSubscriber (createSubscriberInput: any, envelope: any): any {
+    console.log('createSubscriber', { createSubscriberInput })
+    return envelope({ subscriber: this.getSubscriber('2') })
+  }
 }
 
 export default Accounts
